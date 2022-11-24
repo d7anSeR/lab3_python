@@ -16,10 +16,9 @@ class Iterator1:
         self.files = os.listdir(os.path.join("dataset", path_file))
         self.limit = len(self.files)
         self.path = path_file
-        return self
 
-    def __iter__(self):
-        return self
+    # def __iter__(self):
+    #     return self
 
     def __next__(self):
         if self.count < self.limit:

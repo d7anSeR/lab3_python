@@ -2,7 +2,7 @@ import csv
 import os
 
 
-def writing_csv(name_class_good: str, name_class_bad: str, name_annatation: str) -> None:
+def create_csv1(name_class_good: str, name_class_bad: str, name_annatation: str) -> None:
     '''The function of creating a csv file with 3 parameters: absolute path, relative path, class name'''
     with open(name_annatation, mode="w", encoding="UTF-16", newline='') as f:
         writer = csv.writer(f, delimiter=';')
@@ -20,7 +20,3 @@ def writing_csv(name_class_good: str, name_class_bad: str, name_annatation: str)
             writer.writerow([abspath_bad, name_bad_otnos, name_class_bad])
     pass
 
-
-def run1(name_class_good: str, name_class_bad: str, name_annatation: str) -> None:
-    '''The function of launching a function that creates a csv file'''
-    writing_csv(name_class_good, name_class_bad, name_annatation)

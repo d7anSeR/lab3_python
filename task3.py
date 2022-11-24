@@ -14,7 +14,7 @@ def create_dir(dir_name: str) -> None:
         name = os.path.join(dir_name, "dataset")
         os.mkdir(name)
 
-def create_annotation3(dir_name, annotation_name, good_name, bad_name):
+def create_csv3(dir_name, annotation_name, good_name, bad_name):
     good = os.path.join("dataset", good_name)
     bad = os.path.join("dataset", bad_name)
     list_good = os.listdir(good)
