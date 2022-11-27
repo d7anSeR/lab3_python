@@ -1,13 +1,15 @@
 import sys
 import os
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QFileDialog, QMessageBox, QRadioButton, QPushButton, QVBoxLayout, QTabWidget, QHBoxLayout, QPlainTextEdit
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 
 
 from task1 import create_csv1
 from task2 import create_csv2, copy_dir2
 from task3 import create_csv3, copy_dir3
 from task5 import Iterator1
+import codecs
 
 class Example(QWidget):
 
@@ -15,10 +17,11 @@ class Example(QWidget):
         super().__init__()
         self.__button = QPushButton("Select a directory", self)
         self.__button.clicked.connect(self.insert_dir)
-        self.__iterator = Iterator1("good")
+        self.__iterator1 = Iterator1("dataset","good")
+        self.__iterator2 = Iterator1("dataset","bad")
         self.__lable = QLabel(self)
-        self.__name_dir = "new_dir"
-        self.__path = "dataset"
+        self.__name_dir = "dataset"
+        self.__path = ""
         self.initUI()
 
     def initUI(self):
@@ -31,28 +34,35 @@ class Example(QWidget):
         tabs.addTab(self.__general(), "general")
         tabs.addTab(self.__show_review(), "show review")
         tabs.addTab(self.__tasks(), "tasks")
-        self.__iterator.path = self.__path
+        self.__iterator1.path = self.__path
+        self.__iterator2.path = self.__path
         layout.addWidget(tabs)
         self.show()
 
-
-    def __clear_button(self) -> None:
-        self.__lable = QPlainTextEdit()
-        with open(self.__path, "r") as f:
-            self.__lable.setPlainText(f.read())
-        self.__iterator.count = 0
-        self.resize(300, 300)
-
-
-    def __next_button(self) -> None:
+    def __good(self) -> None:
         try:
-            new = os.path.join(os.path.join(self.__iterator.path, self.__iterator.path), self.__iterator.__next__())
-            self.__lable = QPlainTextEdit()
-            with open(new, "r") as f:
-                self.__lable.setPlainText(f.read())
+            self.__iterator1.path = "good"
+            new = os.path.join(os.path.join(self.__iterator1.folder, self.__iterator1.path), self.__iterator1.__next__())
             print(new)
+            f = codecs.open(new, 'r', 'utf-8')
+            self.__review = f.read()
+            self.__lable.setText(self.__review)
+            f.close()
         except:
-            print("Error")
+            print("folder 'good' is over")
+
+    def __bad(self) -> None:
+        try:
+            self.__iterator2.path = "bad"
+            new = os.path.join(os.path.join(self.__iterator2.folder, self.__iterator2.path), self.__iterator2.__next__())
+            print(new)
+            f = codecs.open(new, 'r', 'utf-8')
+            self.__review = f.read()
+            self.__lable.setText(self.__review)
+            f.close()
+        except:
+            print("folder 'good' is over")
+
 
     def __general(self) -> QWidget:
         general = QWidget()
@@ -67,15 +77,20 @@ class Example(QWidget):
 
     def __show_review(self) -> QWidget:
         show_review = QWidget()
-        layout = QVBoxLayout()
-        layoutButton = QHBoxLayout()
-        clear = QPushButton("clear")
-        clear.clicked.connect(self.__clear_button)
-        next = QPushButton("next")
-        next.clicked.connect(self.__next_button)
-        layoutButton.addWidget(clear)
-        layoutButton.addWidget(next)
-        layout.addLayout(layoutButton)
+        layout = QHBoxLayout()
+        layout_button = QVBoxLayout()
+        next_good = QPushButton("next_good")
+        next_good.clicked.connect(self.__good)
+        layout_button.addWidget(next_good)
+        next_bad = QPushButton("next_bad")
+        next_bad.clicked.connect(self.__bad)
+        layout_button.addWidget(next_bad)
+        self.__lable.setFont(QFont("Times", 7))
+        self.__lable.setGeometry(QtCore.QRect(0, 1000, 1000, 50))
+        self.__lable.setWordWrap(True)
+        self.__lable.setAlignment(QtCore.Qt.AlignJustify  | QtCore.Qt.AlignLeft)
+        layout.addWidget(self.__lable)
+        layout.addLayout(layout_button)
         show_review.setLayout(layout)
         return show_review
 
