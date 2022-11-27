@@ -12,25 +12,7 @@ def create_dir(dir_name: str) -> None:
         name = os.path.join(dir_name, "dataset")
         os.mkdir(name)
 
-def create_csv2(good_name, bad_name, dir_name, annotation_name):
-    good = os.path.join("dataset", good_name)
-    bad = os.path.join("dataset", bad_name)
-    list_good = os.listdir(good)
-    list_bad = os.listdir(bad)
-    for file_dataset in os.listdir("dataset"):
-        path_p = os.path.join("dataset", file_dataset)
-        class_name = os.listdir(path_p)
-        for elem in class_name:
-            old_file = os.path.join(path_p, elem)
-            new_file = os.path.join(dir_name, "dataset", f"{file_dataset}_{elem}")
-            with open(annotation_name, mode="a", encoding="UTF-16", newline='') as f:
-                writer = csv.writer(f, delimiter=';')
-                abspath_f = os.path.join(os.path.abspath(dir_name), f"{good_name}_{elem}")
-                otnos_path = os.path.join(dir_name, f"{file_dataset}_{elem}")
-                writer.writerow([abspath_f, otnos_path, file_dataset])
-            pass
-
-def copy_dir2(dir_name: str, good_name: str, bad_name: str) -> None:
+def copy_dir2(good_name: str, bad_name: str, dir_name: str, annotation_name: str) -> None:
     '''
     the function copies the dataset to a 
     new directory with changes in the file name (number.txt->classname_number.txt) by means of creating 
@@ -51,3 +33,10 @@ def copy_dir2(dir_name: str, good_name: str, bad_name: str) -> None:
             new_file = os.path.join(
                 dir_name, "dataset", f"{file_dataset}_{elem}")
             shutil.copy(old_file, new_file)
+            with open(os.path.join(dir_name, annotation_name), mode="a", encoding="UTF-16", newline='') as f:
+                writer = csv.writer(f, delimiter=';')
+                abspath_f = os.path.join(os.path.abspath(
+                    dir_name), f"{file_dataset}_{elem}")
+                otnos_path = os.path.join(dir_name, f"{file_dataset}_{elem}")
+                writer.writerow([abspath_f, otnos_path, file_dataset])
+            pass
