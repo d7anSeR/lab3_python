@@ -11,9 +11,10 @@ class Iterator1:
         __next__ : return object and the counter is incremented by one, that is, it moves to the next element
     '''
 
-    def __init__(self, path_file: str):
+    def __init__(self, name_folder: str, path_file: str):
         self.count = 0
-        self.files = os.listdir(os.path.join("dataset", path_file))
+        self.files = os.listdir(os.path.join(name_folder, path_file))
+        self.folder = name_folder
         self.limit = len(self.files)
         self.path = path_file
 
