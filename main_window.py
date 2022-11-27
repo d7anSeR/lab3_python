@@ -1,7 +1,7 @@
 import sys
 import os
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QFileDialog, QMessageBox, QRadioButton, QPushButton, QVBoxLayout, QTabWidget, QHBoxLayout, QPlainTextEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QFileDialog, QMessageBox, QPushButton, QVBoxLayout, QTabWidget, QHBoxLayout
 from PyQt5.QtGui import QIcon, QFont
 
 
@@ -14,16 +14,17 @@ import codecs
 
 class Example(QWidget):
 
-    def __init__(self):
+    def __init__(self) -> None:
+        '''class constructor'''
         super().__init__()
         self.__iterator1 = Iterator1("dataset", "good")
         self.__iterator2 = Iterator1("dataset", "bad")
         self.__lable = QLabel(self)
-        self.__name_dir = ""
         self.__path = ""
         self.initUI()
 
-    def initUI(self):
+    def initUI(self) -> None:
+        '''the method that sets the main parameters of the window'''
         self.setGeometry(300, 300, 600, 600)
         self.setWindowTitle('Laboratory Work №2 on application programming')
         self.setWindowIcon(QIcon('icon.jpg'))
@@ -38,6 +39,7 @@ class Example(QWidget):
         self.show()
 
     def __good(self) -> None:
+        '''the method of displaying a good review on the screen'''
         try:
             self.__iterator1.path = "good"
             new = os.path.join(os.path.join(
@@ -48,9 +50,10 @@ class Example(QWidget):
             self.__lable.setText(self.__review)
             f.close()
         except:
-            print("folder 'good' is over")
+            print("error when tried to open file")
 
     def __bad(self) -> None:
+        '''the method of displaying a bad review on the screen'''
         try:
             self.__iterator2.path = "bad"
             new = os.path.join(os.path.join(
@@ -61,9 +64,10 @@ class Example(QWidget):
             self.__lable.setText(self.__review)
             f.close()
         except:
-            print("folder 'good' is over")
+            print("error when tried to open file")
 
-    def __tasks(self) -> QWidget:
+    def __tasks(self) -> QWidget:  # сделать если пользователь не выбрал папку
+        '''method for working with dataset by tasks'''
         tasks_tab = QWidget()
         layout = QHBoxLayout()
         self.__button = QPushButton("Select a directory", self)
@@ -83,6 +87,7 @@ class Example(QWidget):
         return tasks_tab
 
     def __show_review(self) -> QWidget:
+        '''method for implementing the transition to the following instances of classes'''
         show_review = QWidget()
         layout = QHBoxLayout()
         layout_button = QVBoxLayout()
@@ -102,21 +107,25 @@ class Example(QWidget):
         return show_review
 
     def __task1(self) -> None:
+        '''method for working on task1'''
         print("task1")
         create_csv1("good", "bad", QFileDialog.getExistingDirectory(
             self, 'Select Folder'), "annotation1")
 
     def __task2(self) -> None:
-        print("task2!")
+        '''method for working on task2'''
+        print("task2")
         copy_dir2("good", "bad", QFileDialog.getExistingDirectory(
             self, 'Select Folder'), "annotation2")
 
     def __task3(self) -> None:
-        print("task3 for two")
-        copy_dir3(
-            "good", "bad", QFileDialog.getExistingDirectory(self, 'Select Folder'), "annotation3")
+        '''method for working on task3'''
+        print("task3")
+        copy_dir3("good", "bad", QFileDialog.getExistingDirectory(
+            self, 'Select Folder'), "annotation3")
 
-    def insert_dir(self):
+    def insert_dir(self) -> None:
+        '''method for selecting the main folder'''
         flag = True
         while flag:
             self.__folderpath = QFileDialog.getExistingDirectory(self)
@@ -126,7 +135,6 @@ class Example(QWidget):
                 error.setText("error when selecting a folder")
                 error.exec_()
             else:
-                self.__name_dir = "dataset"
                 flag = False
 
 
