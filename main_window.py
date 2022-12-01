@@ -40,6 +40,12 @@ class Example(QWidget):
 
     def __good(self) -> None:
         '''the method of displaying a good review on the screen'''
+        if 'dataset' not in self.__path:
+            error = QMessageBox()
+            error.setWindowTitle("Error")
+            error.setText("don't choose the folder")
+            error.exec_()
+            return
         try:
             self.__iterator1.path = "good"
             new = os.path.join(os.path.join(
@@ -54,6 +60,12 @@ class Example(QWidget):
 
     def __bad(self) -> None:
         '''the method of displaying a bad review on the screen'''
+        if 'dataset' not in self.__path:
+            error = QMessageBox()
+            error.setWindowTitle("Error")
+            error.setText("don't choose the folder")
+            error.exec_()
+            return
         try:
             self.__iterator2.path = "bad"
             new = os.path.join(os.path.join(
@@ -66,7 +78,7 @@ class Example(QWidget):
         except:
             print("error when tried to open file")
 
-    def __tasks(self) -> QWidget:  # сделать если пользователь не выбрал папку
+    def __tasks(self) -> QWidget:
         '''method for working with dataset by tasks'''
         tasks_tab = QWidget()
         layout = QHBoxLayout()
@@ -108,18 +120,36 @@ class Example(QWidget):
 
     def __task1(self) -> None:
         '''method for working on task1'''
+        if 'dataset' not in self.__path:
+            error = QMessageBox()
+            error.setWindowTitle("Error")
+            error.setText("don't choose the folder")
+            error.exec_()
+            return
         print("task1")
         create_csv1("good", "bad", QFileDialog.getExistingDirectory(
             self, 'Select Folder'), "annotation1")
 
     def __task2(self) -> None:
         '''method for working on task2'''
+        if 'dataset' not in self.__path:
+            error = QMessageBox()
+            error.setWindowTitle("Error")
+            error.setText("don't choose the folder")
+            error.exec_()
+            return
         print("task2")
         copy_dir2("good", "bad", QFileDialog.getExistingDirectory(
             self, 'Select Folder'), "annotation2")
 
     def __task3(self) -> None:
         '''method for working on task3'''
+        if 'dataset' not in self.__path:
+            error = QMessageBox()
+            error.setWindowTitle("Error")
+            error.setText("don't choose the folder")
+            error.exec_()
+            return
         print("task3")
         copy_dir3("good", "bad", QFileDialog.getExistingDirectory(
             self, 'Select Folder'), "annotation3")
@@ -136,9 +166,11 @@ class Example(QWidget):
                 error.exec_()
             else:
                 flag = False
+                self.__path = "dataset"
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
+    
